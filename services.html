@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="icon" href="https://aomra.co.uk/img/favicon.ico" type="image/x-icon">
+		<title>Aomra | Services</title>
+		<link rel="stylesheet" href="css/services.css">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/device.js" defer></script>
+		<script src="js/services.js" defer></script>
+		<script src="js/checkbox.js" defer></script>
+	</head>
+	<body>
+		<!-- page -->
+		<div class="wrapper">
+			<!-- header -->
+			<header class="header" id="header">
+				<!-- logo -->
+				<div class="header__logo">
+					<a href="index.html">
+						<div class="logo__row">
+							<div class="logo__img">
+								<img src="img/header__logo.svg" alt="">
+							</div>
+							<div class="logo__body">AOMRA</div>
+						</div>
+					</a>
+				</div>
+				<!-- menu -->
+				<nav class="header__menu">
+					<button class="burger_menu_icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</button>
+					<ul class="header__menu__row">
+						<li><a href="index.html" class="header__btn">HOME</a></li>
+						<!-- book -->
+						<li class="book__touch"><a href="services.html" class="header__btn">BOOK</a></li>
+						<li class="book__pc">
+							<button class="header__btn header__select">BOOK<span class="header__select__arrow"></span></button>
+							<ul class="header__menu__sub_list">
+								<li>
+									<a href="calendar.html"><div class="header__menu__sub_book sub_book__1">
+										<div class="sub_book__img">
+											<img src="img/calendar.png" alt="">
+										</div>
+										<div class="sub_book__title">Calendar</div>
+										<div class="sub_book__text">Choose a session time convenient for you.</div>
+									</div></a>
+								</li>
+								<div class="sub_list__rectangle"></div>
+								<li>
+									<a href="services.html"><div class="header__menu__sub_book sub_book__2">
+										<div class="sub_book__img">
+											<img src="img/services.png" alt="">
+										</div>
+										<div class="sub_book__title">Services</div>
+										<div class="sub_book__text">The services we provide.</div>
+									</div></a>
+								</li>
+							</ul>
+						</li>
+						<li><a href="contact.html" class="header__btn">CONTACT</a></li>
+						<li><a href="faq.html" class="header__btn">FAQ</a></li>
+					</ul>
+				</nav>
+				<!-- auth & reg -->
+				<div class="header__auth">
+					<form action="#auth">
+						<button class="header__login header__btn">LogIn</button>
+					</form>
+					<form action="#reg">
+						<button class="header__sign_up_big empty_btn">Sign-Up</button>
+						<button class="header__sign_up_small">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" fill="none">
+								<path d="M12.0283 46.774C11.7786 44.0938 13.1808 41.3529 16.235 39.3084C22.675 35.0384 33.1983 35.0384 39.5917 39.3084C42.6525 41.3447 44.0542 44.0872 43.7967 46.774M27.9017 30.6984C27.6683 30.675 27.3883 30.675 27.1317 30.6984C24.4535 30.6074 21.9158 29.4776 20.0561 27.5483C18.1964 25.6189 17.1607 23.0414 17.1683 20.3617C17.1683 14.645 21.7883 10.0017 27.5283 10.0017C28.8873 9.97717 30.2378 10.2206 31.5027 10.718C32.7676 11.2154 33.9221 11.957 34.9004 12.9006C35.8786 13.8442 36.6615 14.9713 37.2042 16.2174C37.7469 17.4636 38.0388 18.8044 38.0633 20.1634C38.0878 21.5223 37.8445 22.8728 37.347 24.1377C36.8496 25.4026 36.108 26.5571 35.1644 27.5354C34.2208 28.5137 33.0937 29.2965 31.8476 29.8392C30.6015 30.3819 29.2606 30.6738 27.9017 30.6984Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+					</form>
+				</div>
+			</header>
+			<div class="content">
+				<div class="product_container" id="product_container"></div>
+				<div class="cart" id="cart">
+					<div class="cart__size" id="cart__size"></div>
+					<div class="total__price" id="total__price"></div>
+					<div class="calendar_btn"><button class="main_btn" id="calendar_btn">Сhoose a Time</button></div>
+				</div>
+				<button id="clear_cart_btn">Очистить корзину</button>
+			</div>
+			<!-- footer -->
+			<footer class="footer">
+				<div class="footer__text">Follow Us</div>
+				<div class="footer__relations">
+					<!-- whatsapp -->
+					<a href="https://aomra.co.uk/whatsapp" class="contact_us _whatsapp"></a>
+					<!-- messenger -->
+					<a href="https://aomra.co.uk/messenger" class="contact_us _messenger"></a>
+					<!-- facebook -->
+					<a href="https://aomra.co.uk/facebook" class="contact_us _facebook"></a>
+					<!-- instagram -->
+					<a href="https://aomra.co.uk/instagram" class="contact_us _instagram"></a>
+					<!-- treatwell -->
+					<a href="https://aomra.co.uk/treatwell" class="contact_us _treatwell" target="_blank"></a>
+				</div>
+			</footer>
+			<!-- copyright -->
+			<div class="copyright" id="copyright">© 2023 <span>AOMRA</span>. All rights reserved. Powered by <a href=""><span>Chill Squad Team</span></a></div>
+		</div>
+		<!-- registration form -->
+		<!-- modal window template -->
+		<div class="modal_wrapper" id="reg"> <!-- shadow around -->
+			<div class="modal_content_reg"> <!-- body for leveling -->
+				<div class="modal"> <!-- custom body -->
+					<!-- modal close button -->
+					<form action="#header"><button class="modal__close_btn"></button></form>
+					<!-- modal window content -->
+					<div class="modal__cont">
+						<div class="registration">
+							<div class="title_switch">Already have an account? <form action="#auth"><button class="btn_switch">Log In</button></form></div>
+							<form action="php/check.php" method="post">
+								<input type="email" class="form_control" name="email" id="email" placeholder="E-mail">
+								<input type="password" class="form_control" name="pass" id="pass" placeholder="Password">
+								<input type="password" class="form_control" name="conf_pass" id="conf_pass" placeholder="And password again">
+								<div class="checkbox">
+									<label for="accept_policy">I accept the Privacy Policy.</label>
+									<input type="checkbox" id="accept_policy" checked>
+								</div>
+								<div class="btn_success"><button class="main_btn" type="submit">Create an account</button></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- authorization form -->
+		<div class="modal_wrapper" id="auth">
+			<div class="modal_content_auth">
+				<div class="modal">
+					<form action="#header"><button class="modal__close_btn"></button></form>
+					<div class="modal__cont">
+						<div class="login">
+							<div class="title_switch">Don't have an account yet? <form action="#reg"><button class="btn_switch">Sign Up</button></form></div>
+							<form action="php/auth.php" method="post">
+								<!-- form-group -->
+								<input type="email" class="form_control" name="email" id="email" placeholder="E-mail">
+								<input type="password" class="form_control" name="pass" id="pass" placeholder="Password">
+								<a href="#" class="forgot_pass">Forgot password?</a>
+								<div class="checkbox">
+									<label for="remember_me">Remember me.</label>
+									<input type="checkbox" id="remember_me" checked>
+								</div>
+								<div class="btn_success"><button class="main_btn" type="submit">Log In</button></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
