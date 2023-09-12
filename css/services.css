@@ -887,6 +887,7 @@ input[name=conf_pass] {
   line-height: 25px;
 }
 
-.cart {
-  display: none;
+.selected {
+  color: var(--black-white-8);
+  background-color: var(--black-white-2);
 }
