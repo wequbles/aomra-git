@@ -169,15 +169,22 @@ document.addEventListener('DOMContentLoaded', async function() {
 		// Проверяем, выбрана ли кнопка опции
 		const isOptionSelected = event.target.classList.contains('selected');
 
-		if (!isOptionSelected) {
-			// Добавляем выбранную опцию в массив сохраненных опций
-			savedOptions.push({ productId, optionId });
-			event.target.classList.add('selected');
-		} else {
-			// Если кнопка опции отменена, удаляем соответствующую опцию из массива сохраненных опций
-			savedOptions = savedOptions.filter(option => !(option.productId === productId && option.optionId === optionId));
-			event.target.classList.remove('selected');
+		// Если кнопка опции уже выбрана, выходим из функции
+		if (isOptionSelected) {
+			return;
 		}
+
+		// Удаляем все выбранные опции этого товара
+		savedOptions = savedOptions.filter(option => option.productId !== productId);
+
+		// Добавляем выбранную опцию в массив сохраненных опций
+		savedOptions.push({ productId, optionId });
+
+		// Устанавливаем класс 'selected' для выбранного элемента
+		document.querySelectorAll(`.option__selection[data-product-id="${productId}"]`).forEach(button => {
+			button.classList.remove('selected');
+		});
+		event.target.classList.add('selected');
 
 		// Сохраняем обновленные опции в LocalStorage
 		localStorage.setItem('selectedOptions', JSON.stringify(savedOptions));
@@ -188,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		// Выводим данные из LocalStorage в консоль
 		console.log(localStorage.getItem('selectedOptions'));
 		console.log('Total Price:', cart.totalPrice.toFixed(2));
-		console.log(cart)
+		console.log(cart);
 	}
 
 /* Вычисляем общую сумму цен выбранных опций totalPrice */
@@ -206,8 +213,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 		});
 	}
 
-/* Вычисляем размер корзины cart.size */
-	function calculationCartSize(savedOptions){
+	/* Вычисляем размер корзины cart.size */
+	function calculationCartSize(savedOptions) {
 		cart.size = savedOptions.length;
 		updateCart();
 	}
@@ -221,31 +228,32 @@ document.addEventListener('DOMContentLoaded', async function() {
 /* Кнопка "Очистить корзину" */
 	// Добавление обработчика событий для кнопки "Очистить корзину"
 	const clearCartButton = document.getElementById('clear_cart_btn');
-	clearCartButton.addEventListener('click', function(savedOptions) {
+	clearCartButton.addEventListener('click', function() {
 		// Очистить массив с выбранными товарами
-		savedOptions = [];
+		savedOptions.length = 0;
 
 		// Сохранить обновленные опции в LocalStorage
 		localStorage.setItem('selectedOptions', JSON.stringify(savedOptions));
 		calculationTotalPrice(savedOptions);
 		calculationCartSize(savedOptions);
-		document.querySelectorAll('.product__option .selected').forEach(button => 
-			button.classList.remove('selected')
-		);
+		document.querySelectorAll('.product__option .selected').forEach(button => {
+			button.classList.remove('selected');
+		});
+
 		// Выводим данные из LocalStorage в консоль
 		console.log(localStorage.getItem('selectedOptions'));
 		console.log('Total Price:', cart.totalPrice.toFixed(2));
-		console.log(cart)
+		console.log(cart);
 	});
 
-// Получаем все данные из LocalStorage
-const localStorageData = { ...localStorage };
+	// Получаем все данные из LocalStorage
+	const localStorageData = { ...localStorage };
 
-// Выводим данные из LocalStorage в консоль
-console.log(localStorageData);
-calculationTotalPrice(savedOptions);
-console.log('Total Price:', cart.totalPrice.toFixed(2));
-calculationCartSize(savedOptions);
-console.log(cart);
+	// Выводим данные из LocalStorage в консоль
+	console.log(localStorageData);
+	calculationTotalPrice(savedOptions);
+	console.log('Total Price:', cart.totalPrice.toFixed(2));
+	calculationCartSize(savedOptions);
+	console.log(cart);
 
 })
