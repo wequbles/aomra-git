@@ -1,8 +1,8 @@
 "use strict";
 
-document.addEventListener('DOMContentLoaded', async function() {
-	//localStorage.clear();
+document.addEventListener('DOMContentLoaded', function() {
 
+/* БД */
 	let products = [
 		{
 			id: 1,
@@ -31,15 +31,17 @@ document.addEventListener('DOMContentLoaded', async function() {
 		}
 	];
 
+/* Корзина */
 	let cart = {
 		size: 0,
 		totalPrice: 0,
 		totalTime: 0
 	};
 
-	let productContainer = document.getElementById('product_container');
-	let totalPriceElement = document.getElementById('total__price');
-	let cartSizeElement = document.getElementById('cart__size');
+/* Элементы */
+	const productContainer = document.getElementById('product_container');
+	const totalPriceElement = document.getElementById('total__price');
+	const cartSizeElement = document.getElementById('cart__size');
 
 /* Функция преобразования формата времени */
 	function getTimeFromMins(mins) {
@@ -114,14 +116,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 			optionsContainer.appendChild(optionBlock);
 		});
-
 		productBlock.appendChild(optionsContainer);
 		return productBlock;
 	}
 
 /* Функция для обновления блоков с товарами на странице */
 	function updateProductBlocks(products) {
-		productContainer.innerHTML = ''; // Очищаем контейнер перед добавлением новых товаров
+		// Очищаем контейнер перед добавлением новых товаров
+		productContainer.innerHTML = '';
 
 		// Генерация блоков с товарами и добавление на страницу
 		products.forEach(function (product) {
@@ -147,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 	const optionButtons = document.querySelectorAll('.option__selection');
 
 	// Получаем сохраненные опции из LocalStorage при загрузке страницы
-	const savedOptions = JSON.parse(localStorage.getItem('selectedOptions')) || [];
+	let savedOptions = JSON.parse(localStorage.getItem('selectedOptions')) || [];
 
 	// Пройдитесь по сохраненным опциям и установите соответствующие значения кнопок
 	savedOptions.forEach(option => {
@@ -169,37 +171,36 @@ document.addEventListener('DOMContentLoaded', async function() {
 		// Проверяем, выбрана ли кнопка опции
 		const isOptionSelected = event.target.classList.contains('selected');
 
-		// Если кнопка опции уже выбрана, выходим из функции
+		// Если кнопка опции уже выбрана, удаляем данный товар из выбранных и убираем selected
 		if (isOptionSelected) {
-			return;
+			savedOptions = savedOptions.filter(option => option.productId !== productId);
+			document.querySelectorAll(`.option__selection[data-product-id="${productId}"]`).forEach(button => {
+				button.classList.remove('selected');
+			});
+		} else if (!isOptionSelected) {
+			// Удаляем все выбранные опции этого товара
+			savedOptions = savedOptions.filter(option => option.productId !== productId);
+
+			// Добавляем выбранную опцию в массив сохраненных опций
+			savedOptions.push({ productId, optionId });
+
+			// Устанавливаем класс 'selected' для выбранного элемента
+			document.querySelectorAll(`.option__selection[data-product-id="${productId}"]`).forEach(button => {
+				button.classList.remove('selected');
+			});
+			event.target.classList.add('selected');
 		}
-
-		// Удаляем все выбранные опции этого товара
-		savedOptions = savedOptions.filter(option => option.productId !== productId);
-
-		// Добавляем выбранную опцию в массив сохраненных опций
-		savedOptions.push({ productId, optionId });
-
-		// Устанавливаем класс 'selected' для выбранного элемента
-		document.querySelectorAll(`.option__selection[data-product-id="${productId}"]`).forEach(button => {
-			button.classList.remove('selected');
-		});
-		event.target.classList.add('selected');
 
 		// Сохраняем обновленные опции в LocalStorage
 		localStorage.setItem('selectedOptions', JSON.stringify(savedOptions));
 
-		calculationTotalPrice(savedOptions);
-		calculationCartSize(savedOptions);
+		cartCalculation(savedOptions);
 
-		// Выводим данные из LocalStorage в консоль
-		console.log(localStorage.getItem('selectedOptions'));
-		console.log('Total Price:', cart.totalPrice.toFixed(2));
-		console.log(cart);
+		localstorageInspect();
 	}
 
-/* Вычисляем общую сумму цен выбранных опций totalPrice */
-	function calculationTotalPrice(savedOptions) {
+	function cartCalculation(savedOptions) {
+	/* Вычисляем общую сумму цен выбранных опций totalPrice */
 		// Обнуляем totalPrice перед пересчетом
 		cart.totalPrice = 0;
 		savedOptions.forEach(option => {
@@ -211,19 +212,24 @@ document.addEventListener('DOMContentLoaded', async function() {
 				}
 			}
 		});
-	}
+
+	/* Вычисляем общее время приема totalTime */
+		// Обнуляем totalPrice перед пересчетом
+		cart.totalTime = 0;
+		savedOptions.forEach(option => {
+			const product = products.find(prod => prod.id === parseInt(option.productId));
+			if (product) {
+				const selectedOption = product.option.find(opt => opt.id === option.optionId);
+				if (selectedOption) {
+					cart.totalTime += selectedOption.time;
+				}
+			}
+		});
 
 	/* Вычисляем размер корзины cart.size */
-	function calculationCartSize(savedOptions) {
 		cart.size = savedOptions.length;
 		updateCart();
 	}
-
-/* Кнопка "Выбрать время" */
-	const calendarBtn = document.getElementById('calendar_btn');
-	calendarBtn.addEventListener('click', function() {
-		window.location.href = 'calendar.html';
-	});
 
 /* Кнопка "Очистить корзину" */
 	// Добавление обработчика событий для кнопки "Очистить корзину"
@@ -234,26 +240,23 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 		// Сохранить обновленные опции в LocalStorage
 		localStorage.setItem('selectedOptions', JSON.stringify(savedOptions));
-		calculationTotalPrice(savedOptions);
-		calculationCartSize(savedOptions);
+		cartCalculation(savedOptions);
 		document.querySelectorAll('.product__option .selected').forEach(button => {
 			button.classList.remove('selected');
 		});
 
-		// Выводим данные из LocalStorage в консоль
-		console.log(localStorage.getItem('selectedOptions'));
-		console.log('Total Price:', cart.totalPrice.toFixed(2));
-		console.log(cart);
+		localstorageInspect();
 	});
 
 	// Получаем все данные из LocalStorage
 	const localStorageData = { ...localStorage };
-
 	// Выводим данные из LocalStorage в консоль
-	console.log(localStorageData);
-	calculationTotalPrice(savedOptions);
-	console.log('Total Price:', cart.totalPrice.toFixed(2));
-	calculationCartSize(savedOptions);
-	console.log(cart);
-
+	cartCalculation(savedOptions);
+	localstorageInspect();
+	function localstorageInspect() {
+		// Выводим данные из LocalStorage в консоль
+		console.log(localStorage.getItem('selectedOptions'));
+		console.log('Total Price:', cart.totalPrice.toFixed(2));
+		console.log(cart);
+	}
 })

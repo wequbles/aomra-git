@@ -1,12 +1,85 @@
 "use strict";
 
 document.addEventListener('DOMContentLoaded', function() {
-	// Извлечение параметров запроса и обработка данных по мере необходимости
-	const urlParams = new URLSearchParams(window.location.search);
-	const selectedServicesData = urlParams.get('services');
-	const totalPrice = Number(urlParams.get('totalPrice'));
-	const totalTime = Number(urlParams.get('totalTime'));
-	console.log("total admission time: " + totalTime + " min")
+
+/* БД */
+	let products = [
+		{
+			id: 1,
+			title: 'Массаж банками',
+			description: 'Описание банок',
+			option: [{id: 1, time: 30, price: 19.99 }]
+		},
+		{
+			id: 2,
+			title: 'Массаж палками',
+			description: 'Описание палок',
+			option: [
+				{id: 1, time: 15, price: 19.99 },
+				{id: 2, time: 30, price: 24.44 }
+			]
+		},
+		{
+			id: 3,
+			title: 'Массаж руками',
+			description: 'Описание рук',
+			option: [
+				{id: 1, time: 45, price: 19.99 },
+				{id: 2, time: 60, price: 31.50 },
+				{id: 3, time: 90, price: 49.99 }
+			]
+		}
+	];
+
+/* Корзина */
+	let cart = {
+		size: 0,
+		totalPrice: 0,
+		totalTime: 0
+	};
+
+	// Получаем данные о выбранных товарах из localStorage
+	let savedOptions = JSON.parse(localStorage.getItem('selectedOptions')) || [];
+
+	function cartCalculation(savedOptions) {
+	/* Вычисляем общую сумму цен выбранных опций totalPrice */
+		// Обнуляем totalPrice перед пересчетом
+		cart.totalPrice = 0;
+		savedOptions.forEach(option => {
+			const product = products.find(prod => prod.id === parseInt(option.productId));
+			if (product) {
+				const selectedOption = product.option.find(opt => opt.id === option.optionId);
+				if (selectedOption) {
+					cart.totalPrice += selectedOption.price;
+				}
+			}
+		});
+
+	/* Вычисляем общее время приема totalTime */
+		// Обнуляем totalPrice перед пересчетом
+		cart.totalTime = 0;
+		savedOptions.forEach(option => {
+			const product = products.find(prod => prod.id === parseInt(option.productId));
+			if (product) {
+				const selectedOption = product.option.find(opt => opt.id === option.optionId);
+				if (selectedOption) {
+					cart.totalTime += selectedOption.time;
+				}
+			}
+		});
+
+	/* Вычисляем размер корзины cart.size */
+		cart.size = savedOptions.length;
+	}
+	cartCalculation(savedOptions);
+
+	function localstorageInspect() {
+		// Выводим данные из LocalStorage в консоль
+		console.log(localStorage.getItem('selectedOptions'));
+		console.log('Total Price:', cart.totalPrice.toFixed(2));
+		console.log(cart);
+	}
+	localstorageInspect();
 
 /* Time List */
 	//бронь
@@ -312,13 +385,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		let currentTime = startTime;
 
-		if (totalTime === 0) {
+		if (cart.totalTime === 0) {
 			endTime = 1125;
 		} else {
 			endTime = 1140;
 		}
 
-		while (currentTime <= endTime - totalTime) {
+		while (currentTime <= endTime - cart.totalTime) {
 			const hours = Math.floor(currentTime / 60);
 			const minutes = (currentTime % 60);
 
@@ -380,26 +453,26 @@ document.addEventListener('DOMContentLoaded', function() {
 						currentTime = bookingEndTime + gap;
 						break;
 					}
-					else if (currentTime + totalTime + interval === booking.time) {
+					else if (currentTime + cart.totalTime + interval === booking.time) {
 						isBooked = true;
 						gapAdded = true;
 						currentTime = currentTime + interval - gap;
 						break;
 					}
-					else if (currentTime - gap === previousEndTime && currentTime - gap + totalTime === booking.time) {
+					else if (currentTime - gap === previousEndTime && currentTime - gap + cart.totalTime === booking.time) {
 						isBooked = true;
 						currentTime = currentTime - gap;
 						break;
 					}
-					else if (currentTime < bookingEndTime && currentTime + totalTime > booking.time) {
+					else if (currentTime < bookingEndTime && currentTime + cart.totalTime > booking.time) {
 						isBooked = true;
 						gapAdded = true;
 						currentTime = bookingEndTime + gap;
 						break;
 					}
-					else if (currentTime < booking.time && currentTime + totalTime > bookingEndTime) {
+					else if (currentTime < booking.time && currentTime + cart.totalTime > bookingEndTime) {
 						isBooked = true;
-						currentTime += totalTime;
+						currentTime += cart.totalTime;
 					}
 					previousEndTime = bookingEndTime;
 				}
@@ -431,25 +504,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			const slotPrice = document.createElement('div');
 			slotPrice.classList.add('slot-price');
-			slotPrice.textContent = '£' + totalPrice;
+			slotPrice.textContent = '£' + cart.totalPrice.toFixed(2);
 			timeSlot.appendChild(slotPrice);
 
 			timeSlot.addEventListener('click', () => {
 				const selectedTime = slotTime.textContent;
 				console.log((selectedDate.getMonth() + 1), selectedDate.getDate(), selectedTime);
-				bookingData(selectedTime);
+				//bookingData(selectedTime);
 				alert(`Вы выбрали время приема: ${selectedDate.toLocaleDateString()} ${selectedTime}`);
 			});
 		});
 	}
 
 /* Appointment Logic */
-	function bookingData(selectedTime) {
-		const selectedTimeCell = [];
-		selectedTimeCell[selectedTimeCell.length] = [(selectedDate.getMonth() + 1), selectedDate.getDate(), selectedTime];
-	}
+	// function bookingData(selectedTime) {
+	// 	const selectedTimeCell = [];
+	// 	selectedTimeCell[selectedTimeCell.length] = [(selectedDate.getMonth() + 1), selectedDate.getDate(), selectedTime];
+	// }
 
 /* Basket */
+	/* Преобразования формата времени */
 	function getTimeFromMins(mins) {
 		let hours = Math.trunc(mins/60);
 		let minutes = mins % 60;
@@ -462,45 +536,57 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	};
 
-	if (selectedServicesData) {
-		const selectedServices = JSON.parse(selectedServicesData);
-		displaySelectedServices(selectedServices);
+	/* Обновление корзины basket */
+	const basketContainer = document.getElementById('basket__container');
+	function generateBasketContainer(savedOptions) {
+		const serviceElements = savedOptions.map(option => {
+			const product = products.find(prod => prod.id === parseInt(option.productId));
+			if (product) {
+				// basket__service
+				const serviceElement = document.createElement('div');
+				serviceElement.classList.add('basket__service');
+
+				// service__title
+				const serviceTitle = document.createElement('div');
+				serviceTitle.classList.add('service__title');
+				serviceTitle.textContent = product.title;
+				serviceElement.appendChild(serviceTitle);
+
+				const selectedOption = product.option.find(opt => opt.id === option.optionId);
+				if (selectedOption) {
+					// service__subtitle
+					const serviceSubtitle = document.createElement('div');
+					serviceSubtitle.classList.add('service__subtitle');
+					serviceSubtitle.textContent = `${product.title} (For ${selectedOption.time} Minutes)`;
+					serviceElement.appendChild(serviceSubtitle);
+
+					// service__time
+					const serviceTime = document.createElement('div');
+					serviceTime.classList.add('service__time');
+					serviceTime.textContent = getTimeFromMins(selectedOption.time);
+					serviceElement.appendChild(serviceTime);
+				}
+				return serviceElement;
+			}
+		});
+		return serviceElements;
 	}
 
-	function displaySelectedServices(selectedServices) {
-		const selectedServicesDiv = document.getElementById('selected_services');
-
-		selectedServices.forEach((product) => {
-			const serviceElement = document.createElement('div');
-			serviceElement.classList.add('basket__service');
-
-			const serviceTitle = document.createElement('div');
-			serviceTitle.classList.add('service__title');
-			serviceTitle.textContent = `${product.title}`;
-			serviceElement.appendChild(serviceTitle);
-
-			product.options.forEach(option => {
-				const serviceSubtitle = document.createElement('div');
-				serviceSubtitle.classList.add('service__subtitle');
-				serviceSubtitle.textContent = `${product.title} (For ${option.time} Minutes)`;
-				serviceElement.appendChild(serviceSubtitle);
-
-				const serviceTime = document.createElement('div');
-				serviceTime.classList.add('service__time');
-				serviceTime.textContent = `${getTimeFromMins(option.time)}`;
-				serviceElement.appendChild(serviceTime);
-			});
-
-			selectedServicesDiv.appendChild(serviceElement);
+	if (savedOptions && savedOptions.length > 0) {
+		// Очищаем контейнер
+		basketContainer.innerHTML = '';
+		const serviceElements = generateBasketContainer(savedOptions);
+		serviceElements.forEach(serviceElement => {
+			basketContainer.appendChild(serviceElement);
 		});
 	}
 
-/* Total Price */
-	function showTotalPrice() {
+	/* Обновление totalPrice для корзины */
+	function updateBasketTotalPrice() {
 		const totalPriceElement = document.getElementById('total__price');
-		totalPriceElement.textContent = '£' + totalPrice;
+		totalPriceElement.textContent = '£' + cart.totalPrice.toFixed(2);
 	}
-	showTotalPrice();
+	updateBasketTotalPrice();
 
 /* Calendar */
 	let date = new Date();
