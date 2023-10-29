@@ -2,11 +2,14 @@
 <html lang="en">
 	<head>
 		<link rel="icon" href="https://aomra.co.uk/img/favicon.ico" type="image/x-icon">
-		<title>Aomra | Home</title>
-		<link rel="stylesheet" href="css/style.css">
+		<title>Aomra | Scheduler</title>
+		<link rel="stylesheet" href="css/calendar.css">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="js/device.js" defer></script>
+		<script src="js/cartCalculation.js" defer></script>
+		<script src="js/get_availableTime.js" defer></script>
+		<script src="js/scheduler.js" defer></script>
 	</head>
 	<body>
 		<!-- page -->
@@ -80,14 +83,29 @@
 				</div>
 			</header>
 			<div class="content">
-				<div class="top">
-					<div class="top__body">
-						<div class="top__title">Relax, Rejuvenate and Release</div>
-						<div class="top__text">Experience tranquility and indulge in the healing power of touch. Choose from a variety of services, including deep tissue therapy. Leave your worries behind and enter a state of pure bliss.</div>
-						<div class="top__btn"><a href="services.html" class="main_btn">Book Now!</a></div>
+				<div class="scheduler">
+					<header>
+						<button id="prevDay">
+							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+								<path fill-rule="evenodd" clip-rule="evenodd" d="M9.00163 0.71811C9.37537 0.32692 10 0.32692 10.3738 0.71811C10.7242 1.08485 10.7242 1.6623 10.3738 2.02904L5.62459 7L10.3738 11.971C10.7242 12.3377 10.7242 12.9152 10.3738 13.2819C10 13.6731 9.37537 13.6731 9.00163 13.2819L3 7L9.00163 0.71811Z"/>
+							</svg>
+						</button>
+						<div id="currentMonth"></div>
+						<button id="nextDay">
+							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+								<path fill-rule="evenodd" clip-rule="evenodd" d="M4.99837 0.71811C4.62463 0.32692 3.99996 0.32692 3.62622 0.71811C3.27584 1.08485 3.27584 1.6623 3.62622 2.02904L8.37541 7L3.62622 11.971C3.27584 12.3377 3.27584 12.9152 3.62622 13.2819C3.99996 13.6731 4.62463 13.6731 4.99837 13.2819L11 7L4.99837 0.71811Z"/>
+							</svg>
+						</button>
+					</header>
+					<div id="daysLine">
+						<!-- Дни недели и числа будут добавлены здесь -->
 					</div>
-					<div class="top__3d"></div>
+					<div id="timeList">
+						<!-- Доступные времена записи будут добавлены здесь -->
+					</div>
 				</div>
+				<!-- Checkout -->
+				<div class="checkout_btn"><a href="payment.html" class="main_btn" id="payment_btn">Checkout</a></div>
 			</div>
 			<!-- footer -->
 			<footer class="footer">

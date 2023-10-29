@@ -2,11 +2,14 @@
 <html lang="en">
 	<head>
 		<link rel="icon" href="https://aomra.co.uk/img/favicon.ico" type="image/x-icon">
-		<title>Aomra | Home</title>
-		<link rel="stylesheet" href="css/style.css">
+		<title>Aomra | Payment</title>
+		<link rel="stylesheet" href="css/payment.css">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="js/device.js" defer></script>
+		<script src="js/cartCalculation.js" defer></script>
+		<script src="https://js.stripe.com/v3/"></script>
+		<script src="js/payment.js" defer></script>
 	</head>
 	<body>
 		<!-- page -->
@@ -80,14 +83,37 @@
 				</div>
 			</header>
 			<div class="content">
-				<div class="top">
-					<div class="top__body">
-						<div class="top__title">Relax, Rejuvenate and Release</div>
-						<div class="top__text">Experience tranquility and indulge in the healing power of touch. Choose from a variety of services, including deep tissue therapy. Leave your worries behind and enter a state of pure bliss.</div>
-						<div class="top__btn"><a href="services.html" class="main_btn">Book Now!</a></div>
-					</div>
-					<div class="top__3d"></div>
+				<div class="checkout__title">Secure checkout</div>
+				<div class="cheque">
+					<div class="cheque__title">Aomra</div>
+					<div id="chequeTime"></div>
+					<a href="scheduler.html" class="cheque__action">Choose a diferent time</a>
+					<div id="chequeServices"></div>
+					<div id="chequePrice"></div>
 				</div>
+				<!--<div class="checkout__details">
+					<div class="details__title">Customer</div>
+					<div class="details__subtitle">* required field</div>
+					<input class="details__input" type="text" required name="full_name">
+					<input class="details__input" type="email" required name="email">
+					<input class="details__input" type="tel" required name="telNu" minlength="9" maxlength="14" placeholder="e.g. 07400 123456">
+					<input class="details__input" type="text" name="notes">
+				</div>-->
+
+				<!-- Display a payment form -->
+				<form id="payment-form">
+					<div id="link-authentication-element">
+						<!--Stripe.js injects the Link Authentication Element-->
+					</div>
+					<div id="payment-element">
+						<!--Stripe.js injects the Payment Element-->
+					</div>
+					<button id="submit">
+						<div class="spinner hidden" id="spinner"></div>
+						<span id="button-text">Pay now</span>
+					</button>
+					<div id="payment-message" class="hidden"></div>
+				</form>
 			</div>
 			<!-- footer -->
 			<footer class="footer">

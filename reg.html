@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="icon" href="https://aomra.co.uk/img/favicon.ico" type="image/x-icon">
+		<title>Aomra | Registration</title>
+		<link rel="stylesheet" href="css/modal.css">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/device.js" defer></script>
+		<script src="js/checkbox.js" defer></script>
+	</head>
+	<body>
+		<!-- page -->
+		<div class="wrapper">
+			<div class="content">
+				<!-- registration form -->
+				<!-- modal window template -->
+				<div class="modal"> <!-- custom body -->
+					<!-- modal window content -->
+					<div class="modal__cont">
+						<div class="registration">
+							<div class="title_switch">Already have an account? <a href="auth.html" class="btn_switch">Log In</a></div>
+							<form action="php/check.php" method="post">
+								<input type="email" class="form_control" name="email" id="email" placeholder="E-mail">
+								<input type="password" class="form_control" name="pass" id="pass" placeholder="Password">
+								<input type="text" class="form_control" name="conf_pass" id="conf_pass" placeholder="And password again">
+								<div class="checkbox">
+									<label for="accept_policy">I accept the Privacy Policy.</label>
+									<input type="checkbox" id="accept_policy" checked>
+								</div>
+								<div class="btn_success"><button class="main_btn" type="submit">Create an account</button></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="icon" href="https://aomra.co.uk/img/favicon.ico" type="image/x-icon">
+		<title>Aomra | Authorization</title>
+		<link rel="stylesheet" href="css/modal.css">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/device.js" defer></script>
+		<script src="js/checkbox.js" defer></script>
+	</head>
+	<body>
+		<!-- page -->
+		<div class="wrapper">
+			<div class="content">
+				<!-- authorization form -->
+				<div class="modal">
+					<div class="modal__cont">
+						<div class="login">
+							<div class="title_switch">Don't have an account yet? <a href="reg.html" class="btn_switch">Sign Up</a></div>
+							<form action="php/auth.php" method="post">
+								<!-- form-group -->
+								<input type="email" class="form_control" name="email" id="email" placeholder="E-mail">
+								<input type="password" class="form_control" name="pass" id="pass" placeholder="Password">
+								<a href="#" class="forgot_pass">Forgot password?</a>
+								<div class="checkbox">
+									<label for="remember_me">Remember me.</label>
+									<input type="checkbox" id="remember_me" checked>
+								</div>
+								<div class="btn_success"><button class="main_btn" type="submit">Log In</button></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
