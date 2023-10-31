@@ -2,64 +2,8 @@
 // 	{
 // 		year: 2023,
 // 		month: 10,
-// 		day: 22,
-// 		weekend: true,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 10,
-// 		day: 23,
-// 		weekend: false,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 10,
-// 		day: 24,
-// 		weekend: false,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 10,
-// 		day: 25,
-// 		weekend: false,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 10,
-// 		day: 26,
-// 		weekend: false,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 10,
-// 		day: 27,
-// 		weekend: false,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 10,
-// 		day: 28,
-// 		weekend: false,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 10,
-// 		day: 29,
-// 		weekend: true,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 10,
 // 		day: 30,
-// 		weekend: false,
+// 		weekend: true,
 // 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
 // 	},
 // 	{
@@ -73,76 +17,6 @@
 // 		year: 2023,
 // 		month: 11,
 // 		day: 1,
-// 		weekend: false,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 2,
-// 		weekend: false,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 3,
-// 		weekend: false,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 4,
-// 		weekend: false,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 5,
-// 		weekend: true,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 6,
-// 		weekend: false,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 7,
-// 		weekend: false,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 8,
-// 		weekend: false,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 9,
-// 		weekend: false,
-// 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 10,
-// 		weekend: false,
-// 		time: [1080, 1095, 1110, 1125]
-// 	},
-// 	{
-// 		year: 2023,
-// 		month: 11,
-// 		day: 11,
 // 		weekend: false,
 // 		time: [600, 615, 630, 645, 700, 1080, 1095, 1110, 1125]
 // 	}
@@ -373,7 +247,7 @@ function generateTimeList(selectedDayIndex) {
 				const timePrice = document.createElement('div');
 				timePrice.classList.add('time__price');
 				if (typeof cart !== 'undefined' && cart.hasOwnProperty('totalPrice')) {
-					timePrice.textContent = '£' + cart.totalPrice; // Устанавливаем значение цены
+					timePrice.textContent = '£' + cart.totalPrice.toFixed(2); // Устанавливаем значение цены
 				}
 				timeBlock.appendChild(timePrice);
 
@@ -405,3 +279,31 @@ function generateTimeList(selectedDayIndex) {
 }
 
 console.log(sessionStorage.getItem('selectedDayIndex'), sessionStorage.getItem('selectedTimeIndex'))
+
+
+const checkoutBtn = document.getElementById('checkout_btn');
+checkoutBtn.addEventListener('click', () => {
+	// Создание объекта с данными для отправки
+	const data = {
+		savedOptions,
+		selectedDayIndex: sessionStorage.getItem('selectedDayIndex'),
+		selectedTimeIndex: sessionStorage.getItem('selectedTimeIndex'),
+		availableTime
+	};
+
+	// Отправка запроса на сервер
+	fetch("php/pre_booking.php", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(data)
+	})
+	.then(response => response.text())
+	.then(result => {
+		// Обработка ответа от сервера
+		console.log(result);
+	})
+	.catch(error => {
+		// Обработка ошибок
+		console.error('Ошибка:', error);
+	});
+});

@@ -86,7 +86,10 @@ let cart = {
 
 	function localstorageInspect() {
 		console.log(JSON.stringify(localStorage.getItem('selectedOptions')));
-		console.log(cart);
+		console.log({
+			...cart,
+			totalPrice: parseFloat(cart.totalPrice.toFixed(2))
+		});
 	}
 
 	cartCalculation(savedOptions);
