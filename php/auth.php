@@ -10,7 +10,7 @@
 	$servername = "ausrakorolkoviene15357.domaincommysql.com";
 	$username = "aomra";
 	$password = "=L/jcyM;gb|Yiw3k";
-	$dbname = "products_bd";
+	$dbname = "register_bd";
 
 	$conn = new mysqli($servername, $username, $password, $dbname);
 
