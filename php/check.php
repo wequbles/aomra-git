@@ -28,9 +28,9 @@
 	$servername = "ausrakorolkoviene15357.domaincommysql.com";
 	$username = "aomra";
 	$password = "=L/jcyM;gb|Yiw3k";
-	$dbname = "products_bd";
+	$dbname = "register_bd";
 
-	$conn = new conni($servername, $username, $password, $dbname);
+	$conn = new mysqli($servername, $username, $password, $dbname);
 
 	if ($conn->connect_error) {
 		die("Ошибка подключения: " . $conn->connect_error);

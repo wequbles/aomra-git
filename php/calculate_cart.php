@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors',1);
-error_reporting(E_ALL);
-
 function totalTimeCalculation(array $savedOptions, array $products) {
 	$totalTime = 0;
 
@@ -30,4 +27,6 @@ function get_products() {
 }
 $products = get_products();
 
-totalTimeCalculation($savedOptions, $products);
+$totalTime = totalTimeCalculation($savedOptions, $products);
+return $totalTime;
+?>
